@@ -29,7 +29,7 @@ const credentialsFactory = new ConfigurationServiceClientCredentialFactory({
     MicrosoftAppType: process.env.MicrosoftAppType,
     MicrosoftAppTenantId: process.env.MicrosoftAppTenantId
 });
- 
+
 const botFrameworkAuthentication = createBotFrameworkAuthenticationFromConfiguration(null, credentialsFactory);
 
 // Create adapter.
@@ -74,12 +74,14 @@ server.listen( process.env.port || process.env.PORT || 3978, () => {
 
 // Listen for incoming requests.
 server.post('/api/messages', async (req, res) => {
+    console.log('/api/messages')
     // Route received a request to adapter for processing
     await adapter.process(req, res, (context) => bot.run(context));
 });
 
 // Listen for Upgrade requests for Streaming.
 server.on('upgrade', async (req, socket, head) => {
+    console.log('upgrade')
     // Create an adapter scoped to this WebSocket connection to allow storing session data.
     const streamingAdapter = new CloudAdapter(botFrameworkAuthentication);
 
